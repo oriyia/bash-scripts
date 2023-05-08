@@ -1,0 +1,60 @@
+/home/oriyia/.bash_history
+/home/oriyia/.bashrc
+/home/oriyia/.profile
+/home/oriyia/.python_history
+/home/oriyia/.xinitrc
+/home/oriyia/.Xmodmap
+/home/oriyia/.xprofile
+/home/oriyia/.Xresources
+/home/oriyia/.zshrc
+
+Alacritty
+/home/oriyia/.config/alacritty/alacritty.yml
+
+i3
+/home/oriyia/.config/i3/config
+picom блур, тени, размытие
+/home/oriyia/.config/picom.conf
+блокировка экрана
+/home/oriyia/.config/betterlockscreenrc
+
+nvim
+/home/oriyia/.config/nvim/lua
+/home/oriyia/.config/nvim/init.lua
+/home/oriyia/.local/share/nvim/site/pack/packer/start/lualine.nvim/lua/lualine/themes/lualine_mytheme_onedark.lua
+
+polybar
+/home/oriyia/.config/polybar/config.ini
+/home/oriyia/.config/polybar/launch.sh
+
+ranger
+/home/oriyia/.config/ranger/rc.conf
+Для предпросмотра
+/home/oriyia/.config/ranger/scope.sh
+Предпросмотр кода (оформление)
+/usr/lib/python3/dist-packages/pygments/styles/my.py
+
+zathura
+/home/oriyia/.config/zathura/zathurarc
+
+Ubuntu
+Списки репозиториев
+/etc/apt/sources.list
+
+rofi
+/home/oriyia/.config/rofi/config.rasi
+/home/oriyia/.local/share/rofi/themes/rofi_mytheme_onedark.rasi
+
+zsh
+/home/oriyia/.zsh_history
+/home/oriyia/.zshrc
+starship
+/home/oriyia/.config/starship.toml
+lsd
+/home/oriyia/.config/lsd/config.yaml
+/home/oriyia/.config/lsd/themes/lsd_theme.yaml
+vivid
+/home/oriyia/.config/vivid/vivid_mytheme_onedark.yml
+glow
+/home/oriyia/.config/glow/glow.yml
+/home/oriyia/.config/glow/myconf.json
