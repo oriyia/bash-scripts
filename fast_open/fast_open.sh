@@ -1,21 +1,14 @@
 #!/usr/bin/env bash
 
-# 1. Search for text in files using Ripgrep
-# 2. Interactively restart Ripgrep with reload action
-# 3. Open the file in Vim
-# RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
-# INITIAL_QUERY="${*:-}"
-# FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY")" \
-# fzf --ansi \
-#     --disabled --query "$INITIAL_QUERY" \
-#     --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
-#     --delimiter : \
-#     --preview 'batcat --color=always {1} --highlight-line {2}' \
-#     --preview-window 'up,border-bottom,+{2}+3/3,~3' \
-#     --bind 'enter:become(nvim {1} +{2})'
+# constants
 abstracts=/home/oriyia/abstracts/
 
-# просто поиск по содержимому
+function close_terminal {
+    pid_terminal=$(awk '{print $4}' "/proc/$PPID/stat")
+    kill -9 "$pid_terminal"
+}
+
+# просто поиск по содержимому среди всех файлов и открытие в nvim
 if [[ ${1} = '-n' ]]
 then
     rg --color=always --line-number --no-heading --smart-case "" |
@@ -25,7 +18,7 @@ then
           --preview 'batcat --color=always {1} --highlight-line {2}' \
           --preview-window 'up,border-bottom,+{2}+3/3,~3' \
           --bind 'enter:become(nvim {1} +{2})'
-# открытие найденной строки в zathura
+# поиск по содержимому в abstracts и открытие найденной строки файла pdf в zathura
 elif [[ ${1} = '-z' ]]
 then
     fd -e tex --search-path ${abstracts} -X \
@@ -36,8 +29,38 @@ then
               --preview 'batcat --color=always {1} --highlight-line {2}' \
               --preview-window 'up,border-bottom,+{2}+3/3,~3' \
               --bind 'enter:become(nohup zathura --synctex-forward {2}:1:{1} $(a=${1} ; echo ${a//.tex/.pdf}) &)'
+    close_terminal
+# выбор книги из библиотеки при помощи fzf и открытие в zathura
+elif [[ ${1} = '-b' ]]
+then
+    declare -A books
+
+    for book in $(find ~/yandex/books -name '*.pdf'); do
+        books[${book##*yandex/books}]=$book
+    done
+
+    keys_books=${!books[*]}
+    selected_book=$(fzf <<< "${keys_books// /$'\n'}")
+
+    zathura "${books[$selected_book]}" &
+    disown %1
+    close_terminal
+# выбор конспекта в fzf и открытие его в zathura
+elif [[ ${1} = '-a' ]]
+then
+    declare -A books
+
+    for book in $(find ~/abstracts -type f -regex '.*/.*abstracts?\.pdf'); do
+        books[${book##*abstracts}]=$book
+    done
+
+    keys_books=${!books[*]}
+    selected_book=$(fzf <<< "${keys_books// /$'\n'}")
+
+    zathura "${books[$selected_book]}" &
+    disown %1
+    close_terminal
 else
     echo exit
 fi
 
-kill -KILL $PPID
