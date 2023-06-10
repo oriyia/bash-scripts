@@ -8,7 +8,7 @@ function close_terminal {
     kill -9 "$pid_terminal"
 }
 
-# просто поиск по содержимому среди всех файлов и открытие в nvim
+# поиск по СОДЕРЖИМОМУ среди всех файлов и открытие в nvim
 if [[ ${1} = '-n' ]]
 then
     rg --color=always --line-number --no-heading --smart-case "" |
@@ -30,7 +30,7 @@ then
               --preview-window 'up,border-bottom,+{2}+3/3,~3' \
               --bind 'enter:become(nohup zathura --synctex-forward {2}:1:{1} $(a=${1} ; echo ${a//.tex/.pdf}) &)'
     close_terminal
-# выбор книги из библиотеки при помощи fzf и открытие в zathura
+# выбор pdf книги в yandex и открытие в zathura
 elif [[ ${1} = '-b' ]]
 then
     declare -A books
@@ -45,7 +45,7 @@ then
     zathura "${books[$selected_book]}" &
     disown %1
     close_terminal
-# выбор конспекта в fzf и открытие его в zathura
+# выбор pdf конспекта и открытие его в zathura
 elif [[ ${1} = '-a' ]]
 then
     declare -A books
@@ -60,6 +60,10 @@ then
     zathura "${books[$selected_book]}" &
     disown %1
     close_terminal
+# Поиск по имени файлов домашнего каталога и открытие в nvim
+elif [[ ${1} = '-f' ]]
+then
+    find ~+ | fzf --bind 'enter:become(nvim {})'
 else
     echo exit
 fi
