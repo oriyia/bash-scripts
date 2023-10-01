@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-find "${SECOND_BRAIN}" -type f -regex '.*abstract.pdf' -exec cp {} "${LECTURE_NOTES}" \;
+source_directory="/home/oriyia/second_brain"
+target_directory="/home/oriyia/sync/lecture_notes/"
+search_template='.*abstract.pdf'
+
+find "${source_directory}" -type f -regex "${search_template}" -exec cp {} "${target_directory}" \;
