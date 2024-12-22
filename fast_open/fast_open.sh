@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # constants
-abstracts=/home/oriyia/abstracts/
+lecture_notes=/home/oriyia/second_brain
+pattern_search=abstracts
+directory_books=/home/oriyia/yandex/books
 
 function close_terminal {
     pid_terminal=$(awk '{print $4}' "/proc/$PPID/stat")
@@ -18,10 +20,10 @@ then
           --preview 'batcat --color=always {1} --highlight-line {2}' \
           --preview-window 'up,border-bottom,+{2}+3/3,~3' \
           --bind 'enter:become(nvim {1} +{2})'
-# поиск по содержимому в abstracts и открытие найденной строки файла pdf в zathura
+# поиск по содержимому в lecture_notes и открытие найденной строки файла pdf в zathura
 elif [[ ${1} = '-z' ]]
 then
-    fd -e tex --search-path ${abstracts} -X \
+    fd -e tex --search-path "${lecture_notes}" -X \
         rg --color=always --line-number --no-heading --smart-case '' |
           fzf --ansi \
               --color "hl:-1:underline,hl+:-1:underline:reverse" \
@@ -35,8 +37,8 @@ elif [[ ${1} = '-b' ]]
 then
     declare -A books
 
-    for book in $(find ~/yandex/books -name '*.pdf'); do
-        books[${book##*yandex/books}]=$book
+    for book in $(find "${directory_books}" -name '*.pdf'); do
+        books[${book##*"${directory_books}"}]=$book
     done
 
     keys_books=${!books[*]}
@@ -50,8 +52,8 @@ elif [[ ${1} = '-a' ]]
 then
     declare -A books
 
-    for book in $(find ~/abstracts -type f -regex '.*/.*abstracts?\.pdf'); do
-        books[${book##*abstracts}]=$book
+    for book in $(find "${lecture_notes}" -type f -regex ".*/.*${pattern_search}?\.pdf"); do
+        books[${book##*"${pattern_search}"}]=$book
     done
 
     keys_books=${!books[*]}
